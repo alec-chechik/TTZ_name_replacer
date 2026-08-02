@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>TTZ Name Replacer</title>
+  <style>
+    textarea {
+      field-sizing: content;
+      min-height: 100px;
+      min-width: 500px;
+      resize: none;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>TTZ Name Replacer</h1>
+
+  <label for="input">Input text:</label>
+  <br>
+  <textarea id="input" name="input"></textarea>
+  <br>
+  <button type="button" onclick="bulkReplace(inputArray, replaceArray)">
+    Replace
+  </button>
+  
+  <br><br>
+  
+  <label for="outputText">Output text:</label>
+  <br>
+  <textarea id="outputText" name="output" readonly></textarea>
+  <br>
+  <button type="button" onclick="bulkReplace(inputArray, replaceArray)">
+    Copy
+  </button>
+
+</body>
+</html>
+
+<!-- Function for replacing names -->
+<script>
+  const inputArray = [
+    "alan", "alec", "alex", "corrin", "diem", "diep", "estelle", "fari", "francia", "greene", "isaac", "kaliya", "kamilla", "maggie", "marlon", "mat", "mort", "natalie", "nathan", "raf", "regis", "rian", "sarah", "shireen", "tj", "vasu"
+  ];
+  const replaceArray = [
+    "<@86265216664371200>", "<@413102287129542658>", "<@275817157043159040>", "<@176434364714844160>", "<@201929006797291530>", "<@777306522316570626>", "<@754207524349018142>", "<@398729638186188802>", "<@803848678783189043>", "<@284111929612697601>","<@716783911656620042>", "<@355245169286709268>", "<@366339063982063617>", "<@965745895624830996>", "<@512513033411756052>", "<@238087890414862339>", "<@168511178522361858>", "<@550905504575127563>", "<@255488816033431553>", "<@213784257775009792>", "<@292414278617530368>", "<@373230485393899522>", "<@1456329624484057269>", "<@396000731213070342>", "<@407933545445851136>", "<@322413732472815618>"
+  ];
+
+  //Iterates through inputArray replacing found words. 
+  function bulkReplace(inputArray, replaceArray){
+    var input = document.getElementById("input").value;
+
+    var i, regex = [], map = {};
+    for(i=0; i<inputArray.length; i++){
+      regex.push(inputArray[i].replace(/([-[\]{}()*+?.\\^$|#,])/g,'\\$1'));
+      map[inputArray[i]] = replaceArray[i];
+    }
+    regex = regex.join('|');
+    var replaced = input.replace(new RegExp('\\b(' + regex + ')\\b', 'gi'), function(matched){
+      return map[matched.toLowerCase()];
+    });
+    console.log(replaced)
+    
+    var outputTextbox = document.getElementById("outputText");
+    outputTextbox.value = replaced;
+    }
+    
+    function copyText(){
+      const copyText = document.getElementById("outputText");
+      navigator.clipboard.writeText(copyText.value)
+    }
+</script>
+
+</body>
+</html>
